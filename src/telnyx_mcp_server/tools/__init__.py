@@ -21,7 +21,21 @@ from .call_control import (
     speak,
     transfer,
 )
+from .cloud_storage import (
+    cloud_storage_create_bucket,
+    cloud_storage_delete_object,
+    cloud_storage_download_file,
+    cloud_storage_get_bucket_location,
+    cloud_storage_list_buckets,
+    cloud_storage_list_objects,
+    cloud_storage_upload_file,
+)
 from .connections import get_connection, list_connections, update_connection
+from .embeddings import (
+    create_embeddings,
+    embed_url,
+    list_embedded_buckets,
+)
 from .messaging import get_message, send_message
 from .messaging_profiles import (
     create_messaging_profile,
@@ -36,6 +50,11 @@ from .phone_numbers import (
     list_phone_numbers,
     update_phone_number,
     update_phone_number_messaging_settings,
+)
+from .secrets import (
+    create_integration_secret,
+    delete_integration_secret,
+    list_integration_secrets,
 )
 
 __all__ = [
@@ -58,10 +77,23 @@ __all__ = [
     "send_dtmf",
     "speak",
     "transfer",
+    # Cloud storage tools
+    "cloud_storage_create_bucket",
+    "cloud_storage_list_buckets",
+    "cloud_storage_upload_file",
+    "cloud_storage_download_file",
+    "cloud_storage_list_objects",
+    "cloud_storage_delete_object",
+    "cloud_storage_get_bucket_location",
+    "cloud_storage_create_bucket",
     # Connection tools
     "get_connection",
     "list_connections",
     "update_connection",
+    # Embeddings tools
+    "create_embeddings",
+    "embed_url",
+    "list_embedded_buckets",
     # Messaging tools
     "send_message",
     "get_message",
@@ -77,4 +109,8 @@ __all__ = [
     "list_phone_numbers",
     "update_phone_number",
     "update_phone_number_messaging_settings",
+    # Secrets manager tools
+    "create_integration_secret",
+    "delete_integration_secret",
+    "list_integration_secrets",
 ]

@@ -1,7 +1,8 @@
 """Tests for the Telnyx Assistants service."""
 
+from unittest.mock import MagicMock
+
 import pytest
-from unittest.mock import MagicMock, patch
 
 from telnyx_mcp_server.telnyx.services.assistants import AssistantsService
 

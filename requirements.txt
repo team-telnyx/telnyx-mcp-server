@@ -29,3 +29,4 @@ starlette==0.40.0 ; python_version >= "3.10" and python_version < "4.0"
 typer==0.15.2 ; python_version >= "3.10" and python_version < "4.0"
 typing-extensions==4.12.2 ; python_version >= "3.10" and python_version < "4.0"
 uvicorn==0.27.1 ; python_version >= "3.10" and python_version < "4.0"
+boto3==1.35.99

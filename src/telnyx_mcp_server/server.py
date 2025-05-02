@@ -9,8 +9,10 @@ from .mcp import mcp  # Import the shared MCP instance
 from .telnyx.client import TelnyxClient
 from .telnyx.services.assistants import AssistantsService
 from .telnyx.services.connections import ConnectionsService
+from .telnyx.services.embeddings import EmbeddingsService
 from .telnyx.services.messaging import MessagingService
 from .telnyx.services.numbers import NumbersService
+from .telnyx.services.secrets import SecretsService
 from .tools import *  # Import all tools
 from .utils.logger import get_logger
 
@@ -31,6 +33,8 @@ numbers_service = NumbersService(telnyx_client)
 connections_service = ConnectionsService(telnyx_client)
 messaging_service = MessagingService(telnyx_client)
 assistants_service = AssistantsService(telnyx_client)
+embeddings_service = EmbeddingsService(telnyx_client)
+secrets_service = SecretsService(telnyx_client)
 
 
 def run_server() -> None:

@@ -33,14 +33,14 @@ class CallControlService:
         }
 
         if request.get("filter_application_name_contains"):
-            params["filter[application_name][contains]"] = (
-                request["filter_application_name_contains"]
-            )
+            params["filter[application_name][contains]"] = request[
+                "filter_application_name_contains"
+            ]
 
         if request.get("filter_outbound_voice_profile_id"):
-            params["filter[outbound.outbound_voice_profile_id]"] = (
-                request["filter_outbound_voice_profile_id"]
-            )
+            params["filter[outbound.outbound_voice_profile_id]"] = request[
+                "filter_outbound_voice_profile_id"
+            ]
 
         if request.get("sort"):
             params["sort"] = request["sort"]
@@ -49,7 +49,7 @@ class CallControlService:
         if isinstance(response, dict):
             return response
         return response.json()
-        
+
     def get_call_control_application(
         self,
         request: Dict[str, Any],
@@ -67,7 +67,7 @@ class CallControlService:
         if isinstance(response, dict):
             return response
         return response.json()
-        
+
     def create_call_control_application(
         self,
         request: Dict[str, Any],
@@ -82,7 +82,7 @@ class CallControlService:
         """
         # Create a copy of the request to avoid modifying the original
         data = request.copy()
-        
+
         response = self.client.post("call_control_applications", data=data)
         if isinstance(response, dict):
             return response
@@ -117,10 +117,14 @@ class CallControlService:
         Returns:
             Dict[str, Any]: Response data
         """
-        response = self.client.post(f"/calls/{call_control_id}/actions/hangup", data=data)
+        response = self.client.post(
+            f"/calls/{call_control_id}/actions/hangup", data=data
+        )
         return response
 
-    def playback_start(self, call_control_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def playback_start(
+        self, call_control_id: str, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Start audio playback on a call.
 
         Args:
@@ -130,10 +134,14 @@ class CallControlService:
         Returns:
             Dict[str, Any]: Response data
         """
-        response = self.client.post(f"/calls/{call_control_id}/actions/playback_start", data=data)
+        response = self.client.post(
+            f"/calls/{call_control_id}/actions/playback_start", data=data
+        )
         return response
 
-    def playback_stop(self, call_control_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def playback_stop(
+        self, call_control_id: str, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Stop audio playback on a call.
 
         Args:
@@ -143,7 +151,9 @@ class CallControlService:
         Returns:
             Dict[str, Any]: Response data
         """
-        response = self.client.post(f"/calls/{call_control_id}/actions/playback_stop", data=data)
+        response = self.client.post(
+            f"/calls/{call_control_id}/actions/playback_stop", data=data
+        )
         return response
 
     def send_dtmf(self, call_control_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -156,7 +166,9 @@ class CallControlService:
         Returns:
             Dict[str, Any]: Response data
         """
-        response = self.client.post(f"/calls/{call_control_id}/actions/send_dtmf", data=data)
+        response = self.client.post(
+            f"/calls/{call_control_id}/actions/send_dtmf", data=data
+        )
         return response
 
     def speak(self, call_control_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -169,7 +181,9 @@ class CallControlService:
         Returns:
             Dict[str, Any]: Response data
         """
-        response = self.client.post(f"/calls/{call_control_id}/actions/speak", data=data)
+        response = self.client.post(
+            f"/calls/{call_control_id}/actions/speak", data=data
+        )
         return response
 
     def transfer(self, call_control_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -187,5 +201,7 @@ class CallControlService:
         if "from_" in data:
             data["from"] = data.pop("from_")
 
-        response = self.client.post(f"/calls/{call_control_id}/actions/transfer", data=data)
+        response = self.client.post(
+            f"/calls/{call_control_id}/actions/transfer", data=data
+        )
         return response

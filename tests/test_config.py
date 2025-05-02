@@ -4,6 +4,7 @@ import os
 from unittest import mock
 
 import pytest
+
 from telnyx_mcp_server.config import get_api_base_url
 
 

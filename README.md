@@ -90,6 +90,25 @@ Replace “/path/to/telnyx-mcp-server” with the actual location of the reposit
 - Get connection details
 - Update connection configurations
 
+### Cloud Storage Tools
+- Create buckets compatible with Telnyx Cloud Storage
+- List buckets across all regions
+- Upload files
+- Download files
+- List objects in a bucket
+- Delete objects
+- Get bucket location information
+
+### Embeddings Tools
+- List existing embedded buckets
+- Scrape and embed a website URL
+- Create embeddings for your own files
+
+### Secrets Manager Tools
+- List integration secrets
+- Create new bearer or basic secrets
+- Delete integration secrets
+
 ## Example Usage
 
 Try asking Claude:
@@ -99,6 +118,9 @@ Try asking Claude:
 * "Make a call to my customer at +5555551234 and transfer them to my support team"
 * "Find me a phone number in Chicago with area code 312"
 * "Create an auto-attendant system using Telnyx AI assistants and voice features"
+* "Upload /Volumes/Drive/contract.pdf to the 'legal-docs' bucket in Telnyx Cloud Storage"
+* "Embed the knowledge base at https://example.com/docs so the assistant can answer user questions"
+* "Create a integration secret named openai-token with my openai key XYZ"
 
 ## Coming Soon
 
