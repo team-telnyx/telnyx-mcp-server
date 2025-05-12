@@ -78,6 +78,7 @@ Replace “/path/to/telnyx-mcp-server” with the actual location of the reposit
 ### Messaging Tools
 - Send SMS and MMS messages
 - Get message details
+- Access and view ongoing SMS conversations (`resource://sms/conversations`)
 
 ### Phone Number Tools
 - List your phone numbers
@@ -109,6 +110,68 @@ Replace “/path/to/telnyx-mcp-server” with the actual location of the reposit
 - Create new bearer or basic secrets
 - Delete integration secrets
 
+## Tool Filtering
+
+You can selectively enable or disable specific tools when running the MCP server. This is useful when you only need a subset of the available functionality.
+
+### Listing Available Tools
+
+To see all available tools:
+
+```bash
+uvx --from /path/to/telnyx-mcp-server telnyx-mcp-server --list-tools
+```
+
+### Enabling Specific Tools
+
+You can enable only specific tools using either:
+
+1. **Command-line argument**:
+   ```bash
+   uvx --from /path/to/telnyx-mcp-server telnyx-mcp-server --tools "send_message,get_message,list_phone_numbers"
+   ```
+
+2. **Environment variable**:
+   ```json
+   {
+     "mcpServers": {
+       "Telnyx": {
+         "command": "uvx",
+         "args": ["--from", "/path/to/telnyx-mcp-server", "telnyx-mcp-server"],
+         "env": {
+           "TELNYX_API_KEY": "<insert-your-api-key-here>",
+           "TELNYX_MCP_TOOLS": "send_message,get_message,list_phone_numbers"
+         }
+       }
+     }
+   }
+   ```
+
+### Excluding Specific Tools
+
+You can exclude specific tools while enabling all others:
+
+1. **Command-line argument**:
+   ```bash
+   uvx --from /path/to/telnyx-mcp-server telnyx-mcp-server --exclude-tools "make_call,send_dtmf"
+   ```
+
+2. **Environment variable**:
+   ```json
+   {
+     "mcpServers": {
+       "Telnyx": {
+         "command": "uvx",
+         "args": ["--from", "/path/to/telnyx-mcp-server", "telnyx-mcp-server"],
+         "env": {
+           "TELNYX_API_KEY": "<insert-your-api-key-here>",
+           "TELNYX_MCP_EXCLUDE_TOOLS": "make_call,send_dtmf"
+         }
+       }
+     }
+   }
+   ```
+
 ## Example Usage
 
 Try asking Claude:
@@ -118,13 +181,92 @@ Try asking Claude:
 * "Make a call to my customer at +5555551234 and transfer them to my support team"
 * "Find me a phone number in Chicago with area code 312"
 * "Create an auto-attendant system using Telnyx AI assistants and voice features"
-* "Upload /Volumes/Drive/contract.pdf to the 'legal-docs' bucket in Telnyx Cloud Storage"
-* "Embed the knowledge base at https://example.com/docs so the assistant can answer user questions"
-* "Create a integration secret named openai-token with my openai key XYZ"
 
-## Coming Soon
+## Webhook Receiver
 
-Telnyx is working on a remote MCP implementation with OAuth authentication based on the latest MCP specification. This will enable access to Telnyx's powerful communications APIs through a remotely hosted server without having to run the MCP server locally.
+The MCP server includes a webhook receiver that can handle Telnyx webhooks directly through ngrok. This is useful for receiving call events and other notifications from Telnyx.
+
+### Enabling Webhooks
+
+To enable the webhook receiver, you can either use the `--webhook-enabled` command-line flag or set the `WEBHOOK_ENABLED=true` environment variable. If an `NGROK_AUTHTOKEN` is also provided (see 'Ngrok Integration' below), the ngrok tunnel will be automatically attempted when the server starts. The command-line flag takes precedence if both are set.
+
+**Using Command-Line Flag:**
+
+```bash
+telnyx-mcp-server --webhook-enabled --ngrok-enabled
+```
+
+**Using Environment Variable:**
+
+Alternatively, set the `WEBHOOK_ENABLED=true` environment variable. This is often convenient when configuring via MCP client settings (see 'Webhook Configuration in Claude Desktop' below) or in `.env` files.
+
+```bash
+# Example for your shell
+export WEBHOOK_ENABLED=true
+export NGROK_AUTHTOKEN=your_ngrok_token # Also needed for ngrok
+telnyx-mcp-server
+```
+
+### Ngrok Integration
+
+To enable ngrok tunneling:
+
+1. Get an ngrok authentication token from [ngrok.com](https://ngrok.com/)
+2. Set the `NGROK_AUTHTOKEN` environment variable or use the `--ngrok-authtoken` flag:
+
+```bash
+# Using NGROK_AUTHTOKEN environment variable (recommended)
+export NGROK_AUTHTOKEN=your_ngrok_token
+telnyx-mcp-server --webhook-enabled # Or use WEBHOOK_ENABLED=true env var
+
+# Or using --ngrok-authtoken command line flag
+telnyx-mcp-server --webhook-enabled --ngrok-authtoken your_ngrok_token
+```
+If `NGROK_AUTHTOKEN` is set, the `--ngrok-enabled` flag is generally not required when webhooks are active.
+
+When ngrok is enabled, the server will print the public URL that can be used to configure webhooks in the Telnyx Portal.
+
+**Important:** If ngrok fails to initialize (e.g., due to an invalid authtoken, network issues, or conflicts with another ngrok process), the MCP server will exit on startup. Check the server logs for details (see Troubleshooting section).
+
+### Parent Process Monitoring
+
+The MCP server monitors the parent process (Claude Desktop) and automatically exits when the parent process is gone. This ensures proper cleanup of resources even if Claude Desktop closes unexpectedly.
+
+
+### Webhook Monitoring and Runtime Control
+
+- You can inspect the current webhook and ngrok status by querying the `resource://webhook/info` resource.
+- To retrieve a history of received webhook events, use the `get_webhook_events` tool.
+
+### Webhook Configuration in Claude Desktop
+
+To enable webhooks in Claude Desktop, update your configuration:
+
+```json
+{
+  "mcpServers": {
+    "Telnyx": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/team-telnyx/telnyx-mcp-server.git", "telnyx-mcp-server"],
+      "env": {
+        "TELNYX_API_KEY": "<insert-your-api-key-here>",
+        "NGROK_AUTHTOKEN": "<insert-your-ngrok-token-here>",
+        "WEBHOOK_ENABLED": "true", // Enables webhooks via environment variable
+        // Alternatively, you can use command-line flags in "args" instead of WEBHOOK_ENABLED in env:
+        // e.g., "args": ["--from", "git+https://github.com/team-telnyx/telnyx-mcp-server.git", "telnyx-mcp-server", "--webhook-enabled"],
+      }
+    }
+  }
+}
+```
+
+### Webhook Example
+
+﻿﻿﻿﻿<img width="704" alt="Screenshot Webhook" src="https://github.com/user-attachments/assets/2e1f4a47-df24-4e35-acdf-765ef4a71578" />
+
+## Remote MCP Now Available
+
+Telnyx now offers a remote MCP implementation based on the latest MCP specification. This allows you to access Telnyx's powerful communications APIs through a remotely hosted MCP server. No need to run the server locally. Learn more in the [official documentation](https://developers.telnyx.com/docs/mcp/remote-mcp).
 
 ## Contributing
 
@@ -140,7 +282,7 @@ cd telnyx-mcp-server
 ```bash
 uv venv
 source .venv/bin/activate
-uv pip install -e .
+uv pip install -e ".[dev]"  # Includes development dependencies like ruff
 ```
 
 3. Create a `.env` file and add your Telnyx API key:
@@ -155,6 +297,69 @@ pytest
 
 5. Install the server in Claude Desktop: `mcp install src/telnyx_mcp_server/server.py`
 6. Debug and test locally with MCP Inspector: `mcp dev src/telnyx_mcp_server/server.py`
+
+## Code Quality with Ruff
+
+This project uses [Ruff](https://docs.astral.sh/ruff/) for linting and formatting Python code. Ruff is a fast Python linter and formatter written in Rust, designed to replace multiple Python code quality tools with a single, unified tool.
+
+### Installing Ruff
+
+Ruff is included in the development dependencies. Install it with:
+
+```bash
+uv pip install -e ".[dev]"
+```
+
+### Using Ruff
+
+#### Linting
+
+To check your code for issues:
+
+```bash
+ruff check .
+```
+
+To automatically fix issues where possible:
+
+```bash
+ruff check --fix .
+```
+
+#### Formatting
+
+To format your code:
+
+```bash
+ruff format .
+```
+
+### Pre-commit Workflow
+
+For the best development experience, run these commands before committing changes:
+
+```bash
+# Format code
+ruff format .
+
+# Fix linting issues
+ruff check --fix .
+
+# Run tests
+pytest
+```
+
+### Configuration
+
+Ruff is configured in the `pyproject.toml` file. The configuration includes:
+
+- Code style rules based on PEP 8
+- Import sorting
+- Docstring style checking (Google style)
+- Code complexity checks
+- And more
+
+See the `[tool.ruff]` section in `pyproject.toml` for the complete configuration.
 
 ## Troubleshooting
 
@@ -172,3 +377,13 @@ which uvx
 ```
 
 Once you obtain the absolute path (e.g., `/usr/local/bin/uvx`), update your configuration to use that path (e.g., `"command": "/usr/local/bin/uvx"`). This ensures that the correct executable is referenced.
+
+
+### Server Fails to Start (Especially with Webhooks/Ngrok)
+
+If the MCP server fails to start, particularly if you have webhooks enabled, it might be due to an issue with ngrok initialization.
+One common cause is an existing ngrok process running in the background, potentially from a previous server instance that didn't shut down cleanly.
+
+*   **Check for running processes:** Use commands like `ps aux | grep telnyx-mcp-server` (Linux/macOS) or check Task Manager (Windows) for any lingering `telnyx-mcp-server` processes. Since ngrok is managed internally by the server, you typically won't see a separate 'ngrok' process.
+*   **Kill old processes:** If found, terminate these old processes.
+*   **Check logs:** Review the server logs (locations mentioned above) for specific error messages related to ngrok or server startup.

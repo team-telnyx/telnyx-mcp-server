@@ -31,10 +31,10 @@ class AssistantsService:
         # Hard code voice settings and enabled features
         request["voice_settings"] = {
             "voice": "Telnyx.KokoroTTS.af_heart",
-            "api_key_ref": None
+            "api_key_ref": None,
         }
         request["enabled_features"] = ["telephony"]
-        
+
         response = self.client.post("/ai/assistants", data=request)
         return response
 
@@ -101,10 +101,10 @@ class AssistantsService:
         # Hard code voice settings and enabled features
         if "voice_settings" in request:
             del request["voice_settings"]
-            
+
         if "enabled_features" in request:
             del request["enabled_features"]
-            
+
         response = self.client.post(
             f"/ai/assistants/{assistant_id}",
             data=request,
@@ -134,21 +134,22 @@ class AssistantsService:
         """
         response = self.client.get(f"/ai/assistants/{assistant_id}/texml")
         return response
-        
-    def start_assistant_call(self, default_texml_app_id: str, to: str, from_: str) -> Dict[str, Any]:
+
+    def start_assistant_call(
+        self, default_texml_app_id: str, to: str, from_: str
+    ) -> Dict[str, Any]:
         """Start a call using the assistant's TeXML application.
-        
+
         Args:
             default_texml_app_id: The assistant's default TeXML application ID
             to: Destination number to call
             from_: Source number to call from
-            
+
         Returns:
             Dict[str, Any]: Response data
         """
-        data = {
-            "To": to,
-            "From": from_
-        }
-        response = self.client.post(f"/texml/calls/{default_texml_app_id}", data=data)
+        data = {"To": to, "From": from_}
+        response = self.client.post(
+            f"/texml/calls/{default_texml_app_id}", data=data
+        )
         return response

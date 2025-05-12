@@ -1,5 +1,5 @@
-import os
 from functools import lru_cache
+import os
 from typing import Dict, List, Optional, TypedDict
 
 import boto3
@@ -22,7 +22,7 @@ class CloudStorageService:
         self,
         access_key_id: str,
         secret_access_key: str,
-        default_region: str = "us-east-1",
+        default_region: str = "us-central-1",
         bucket_name: Optional[str] = None,
     ):
         """Initialize the cloud storage service.
@@ -89,7 +89,9 @@ class CloudStorageService:
                     try:
                         # Get the actual region for this bucket
                         bucket_region = self._get_bucket_region(bucket_name)
-                        buckets.append({"name": bucket_name, "region": bucket_region})
+                        buckets.append(
+                            {"name": bucket_name, "region": bucket_region}
+                        )
                         seen_buckets.add(bucket_name)
                     except ValueError:
                         # Skip buckets whose region we can't determine
@@ -135,9 +137,9 @@ class CloudStorageService:
         """
         # Try to get location from default region first
         try:
-            response = self.s3_clients[self.default_region].get_bucket_location(
-                Bucket=bucket_name
-            )
+            response = self.s3_clients[
+                self.default_region
+            ].get_bucket_location(Bucket=bucket_name)
             location = response.get("LocationConstraint") or "us-east-1"
             if location in self.VALID_REGIONS:
                 return location
@@ -158,7 +160,9 @@ class CloudStorageService:
             except Exception:
                 continue
 
-        raise ValueError(f"Could not determine region for bucket: {bucket_name}")
+        raise ValueError(
+            f"Could not determine region for bucket: {bucket_name}"
+        )
 
     def _get_client_for_bucket(self, bucket_name: str) -> boto3.client:
         """Get the appropriate S3 client for the given bucket.
@@ -212,14 +216,18 @@ class CloudStorageService:
         s3 = self.s3_clients[region]
         try:
             s3.create_bucket(
-                Bucket=bucket_name, CreateBucketConfiguration={"LocationConstraint": region}
+                Bucket=bucket_name,
+                CreateBucketConfiguration={"LocationConstraint": region},
             )
             return "Success!!"
         except Exception as e:
             return f"An error occurred: {e}"
 
     def download_file(
-        self, object_name: str, file_path: str, bucket_name: Optional[str] = None
+        self,
+        object_name: str,
+        file_path: str,
+        bucket_name: Optional[str] = None,
     ) -> None:
         """Download a file from cloud storage.
 

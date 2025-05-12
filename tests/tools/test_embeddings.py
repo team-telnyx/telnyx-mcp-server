@@ -15,9 +15,13 @@ from telnyx_mcp_server.tools.embeddings import (
 def mock_service():
     """Create a mock EmbeddingsService."""
     service = MagicMock()
-    service.list_embedded_buckets.return_value = {"data": [{"id": "test-bucket-id"}]}
+    service.list_embedded_buckets.return_value = {
+        "data": [{"id": "test-bucket-id"}]
+    }
     service.embed_url.return_value = {"data": {"bucket": "test-bucket"}}
-    service.create_embeddings.return_value = {"data": {"embeddings": [[0.1, 0.2, 0.3]]}}
+    service.create_embeddings.return_value = {
+        "data": {"embeddings": [[0.1, 0.2, 0.3]]}
+    }
     return service
 
 
@@ -30,7 +34,9 @@ async def test_list_embedded_buckets(mock_get_service, mock_service):
     result = await list_embedded_buckets({"page": 2, "page_size": 10})
 
     mock_get_service.assert_called_once()
-    mock_service.list_embedded_buckets.assert_called_once_with(page=2, page_size=10)
+    mock_service.list_embedded_buckets.assert_called_once_with(
+        page=2, page_size=10
+    )
     assert result == {"data": [{"id": "test-bucket-id"}]}
 
 
@@ -55,7 +61,10 @@ async def test_create_embeddings(mock_get_service, mock_service):
     """Test the create_embeddings tool."""
     mock_get_service.return_value = mock_service
 
-    request = {"texts": ["Hello world", "Test text"], "model": "text-embedding-ada-002"}
+    request = {
+        "texts": ["Hello world", "Test text"],
+        "model": "text-embedding-ada-002",
+    }
 
     result = await create_embeddings(request)
 

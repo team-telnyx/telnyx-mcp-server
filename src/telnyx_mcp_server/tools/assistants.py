@@ -299,7 +299,9 @@ async def start_assistant_call(
                 "The assistant does not have a default TeXML application ID configured"
             )
 
-        default_texml_app_id = assistant["telephony_settings"]["default_texml_app_id"]
+        default_texml_app_id = assistant["telephony_settings"][
+            "default_texml_app_id"
+        ]
 
         # Start the call
         response = service.start_assistant_call(

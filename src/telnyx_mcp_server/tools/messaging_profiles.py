@@ -85,7 +85,9 @@ async def get_messaging_profile(profile_id: str) -> Dict[str, Any]:
 
 
 @mcp.tool()
-async def update_messaging_profile(profile_id: str, request: Dict[str, Any]) -> Dict[str, Any]:
+async def update_messaging_profile(
+    profile_id: str, request: Dict[str, Any]
+) -> Dict[str, Any]:
     """Update a messaging profile.
 
     Args:

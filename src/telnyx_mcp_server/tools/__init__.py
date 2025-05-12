@@ -1,5 +1,7 @@
 """MCP tools package."""
 
+# Import resource functions
+from . import sms_conversations, webhooks
 from .assistants import (
     create_assistant,
     get_assistant,
@@ -57,12 +59,18 @@ from .secrets import (
     list_integration_secrets,
 )
 
+# Import webhook tool functions
+from .webhooks import get_webhook_events
+
 __all__ = [
     # Assistant tools
     "create_assistant",
     "get_assistant",
     "get_assistant_texml",
     "list_assistants",
+    "get_webhook_events",
+    "sms_conversations",
+    "webhooks",
     "mcp_telnyx_delete_assistant",
     "start_assistant_call",
     "update_assistant",
@@ -113,4 +121,6 @@ __all__ = [
     "create_integration_secret",
     "delete_integration_secret",
     "list_integration_secrets",
+    # Webhook tools
+    "get_webhook_events",
 ]

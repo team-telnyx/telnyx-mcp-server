@@ -63,7 +63,9 @@ class CallControlService:
             Dict[str, Any]: Response data
         """
         application_id = request.get("id")
-        response = self.client.get(f"call_control_applications/{application_id}")
+        response = self.client.get(
+            f"call_control_applications/{application_id}"
+        )
         if isinstance(response, dict):
             return response
         return response.json()
@@ -107,7 +109,9 @@ class CallControlService:
         response = self.client.post("/calls", data=data)
         return response
 
-    def hangup(self, call_control_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def hangup(
+        self, call_control_id: str, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Hang up a call.
 
         Args:
@@ -156,7 +160,9 @@ class CallControlService:
         )
         return response
 
-    def send_dtmf(self, call_control_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def send_dtmf(
+        self, call_control_id: str, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Send DTMF tones on a call.
 
         Args:
@@ -171,7 +177,9 @@ class CallControlService:
         )
         return response
 
-    def speak(self, call_control_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def speak(
+        self, call_control_id: str, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Speak text on a call.
 
         Args:
@@ -186,7 +194,9 @@ class CallControlService:
         )
         return response
 
-    def transfer(self, call_control_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def transfer(
+        self, call_control_id: str, data: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Transfer a call.
 
         Args:

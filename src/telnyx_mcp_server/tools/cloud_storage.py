@@ -129,7 +129,8 @@ async def cloud_storage_list_objects(request: Dict[str, Any]) -> List[str]:
         if not cloud_storage_service:
             raise RuntimeError(f"Cloud storage service not initialized")
         return cloud_storage_service.list_objects(
-            prefix=request.get("prefix", ""), bucket_name=request.get("bucket_name")
+            prefix=request.get("prefix", ""),
+            bucket_name=request.get("bucket_name"),
         )
     except Exception as e:
         logger.error(f"Error listing objects: {e}")
@@ -151,7 +152,8 @@ async def cloud_storage_delete_object(request: Dict[str, Any]) -> str:
         if not cloud_storage_service:
             raise RuntimeError(f"Cloud storage service not initialized")
         cloud_storage_service.delete_object(
-            object_name=request["object_name"], bucket_name=request.get("bucket_name")
+            object_name=request["object_name"],
+            bucket_name=request.get("bucket_name"),
         )
         return "Success"
     except Exception as e:

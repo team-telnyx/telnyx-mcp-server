@@ -57,7 +57,9 @@ async def get_phone_number(
 
 
 @mcp.tool()
-async def update_phone_number(id: str, request: Dict[str, Any]) -> Dict[str, Any]:
+async def update_phone_number(
+    id: str, request: Dict[str, Any]
+) -> Dict[str, Any]:
     """Update a phone number.
 
     Args:
@@ -77,7 +79,9 @@ async def update_phone_number(id: str, request: Dict[str, Any]) -> Dict[str, Any
 
 
 @mcp.tool()
-async def list_available_phone_numbers(request: Dict[str, Any]) -> Dict[str, Any]:
+async def list_available_phone_numbers(
+    request: Dict[str, Any],
+) -> Dict[str, Any]:
     """List available phone numbers.
 
     Args:
@@ -115,8 +119,10 @@ async def list_available_phone_numbers(request: Dict[str, Any]) -> Dict[str, Any
 
 
 @mcp.tool()
-async def initiate_phone_number_order(request: Dict[str, Any]) -> Dict[str, Any]:
-    """Initiate a phone number order. 
+async def initiate_phone_number_order(
+    request: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Initiate a phone number order.
 
     Args:
         phone_number: Required. Phone number to buy.
@@ -134,7 +140,9 @@ async def initiate_phone_number_order(request: Dict[str, Any]) -> Dict[str, Any]
 
 
 @mcp.tool()
-async def update_phone_number_messaging_settings(id: str, request: Dict[str, Any]) -> Dict[str, Any]:
+async def update_phone_number_messaging_settings(
+    id: str, request: Dict[str, Any]
+) -> Dict[str, Any]:
     """Update the messaging profile and/or messaging product of a phone number.
 
     Args:

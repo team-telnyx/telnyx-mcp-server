@@ -6,6 +6,7 @@ from .logger import get_logger
 
 logger = get_logger(__name__)
 
+
 def get_authenticated_service(service_cls: Type[Any]) -> Any:
     """Get an authenticated service using the API key from environment.
 

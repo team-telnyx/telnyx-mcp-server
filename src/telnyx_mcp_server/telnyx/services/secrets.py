@@ -45,7 +45,9 @@ class SecretsService:
 
         return self.client.get("integration_secrets", params=params)
 
-    def create_integration_secret(self, request: Dict[str, Any]) -> Dict[str, Any]:
+    def create_integration_secret(
+        self, request: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Create an integration secret.
 
         Args:

@@ -33,14 +33,14 @@ class ConnectionsService:
         }
 
         if request.get("filter_connection_name_contains"):
-            params["filter[connection_name_contains]"] = (
-                request["filter_connection_name_contains"]
-            )
+            params["filter[connection_name_contains]"] = request[
+                "filter_connection_name_contains"
+            ]
 
         if request.get("filter_outbound_voice_profile_id"):
-            params["filter[outbound_voice_profile_id]"] = (
-                request["filter_outbound_voice_profile_id"]
-            )
+            params["filter[outbound_voice_profile_id]"] = request[
+                "filter_outbound_voice_profile_id"
+            ]
 
         if request.get("sort"):
             params["sort"] = request["sort"]

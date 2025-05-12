@@ -18,7 +18,9 @@ from telnyx_mcp_server.tools.assistants import list_assistants
 def mock_telnyx_client():
     """Create a mock Telnyx client for testing."""
     with patch("telnyx_mcp_server.telnyx.client.TelnyxClient.get") as mock_get:
-        mock_get.return_value = {"data": [{"id": "test-assistant", "name": "Test Assistant"}]}
+        mock_get.return_value = {
+            "data": [{"id": "test-assistant", "name": "Test Assistant"}]
+        }
         yield mock_get
 
 
@@ -46,12 +48,14 @@ async def test_telnyx_client_initialization():
     # Verify the client can be initialized with an API key
     client = TelnyxClient(api_key="test_key")
     assert client.api_key == "test_key"
-    
+
     # Verify settings API key is used when no key is provided
     with patch("telnyx_mcp_server.config.settings") as mock_settings:
         mock_settings.telnyx_api_key = "settings_test_key"
         # Create a new mock to replace the TelnyxClient._init_ method
-        with patch.object(TelnyxClient, "__init__", return_value=None) as mock_init:
+        with patch.object(
+            TelnyxClient, "__init__", return_value=None
+        ) as mock_init:
             client = TelnyxClient()
             client.api_key = "settings_test_key"  # we need to set this manually since we mocked __init__
             mock_init.assert_called_once()

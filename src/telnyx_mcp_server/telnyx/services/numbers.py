@@ -165,12 +165,12 @@ class NumbersService:
             data["connection_id"] = connection_id
 
         return self.client.post("number_orders", data=data)
-        
+
     def update_phone_number_messaging_settings(
-        self, 
-        id: str, 
+        self,
+        id: str,
         messaging_profile_id: Optional[str] = None,
-        messaging_product: Optional[str] = None
+        messaging_product: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Update the messaging profile and/or messaging product of a phone number.
 
@@ -183,11 +183,11 @@ class NumbersService:
             Dict[str, Any]: Response data containing the updated phone number messaging settings
         """
         data = {}
-        
+
         if messaging_profile_id is not None:
             data["messaging_profile_id"] = messaging_profile_id
-            
+
         if messaging_product is not None:
             data["messaging_product"] = messaging_product
-            
+
         return self.client.patch(f"phone_numbers/{id}/messaging", data=data)

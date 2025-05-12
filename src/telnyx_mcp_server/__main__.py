@@ -13,8 +13,7 @@ logger = logging.getLogger("telnyx-mcp")
 
 # Check for API key
 if not os.getenv("TELNYX_API_KEY"):
-    logger.error("TELNYX_API_KEY environment variable not set")
-    print("Error: TELNYX_API_KEY environment variable must be set")
+    logger.critical("TELNYX_API_KEY environment variable not set")
     sys.exit(1)
 
 # Import server only after checking for API key

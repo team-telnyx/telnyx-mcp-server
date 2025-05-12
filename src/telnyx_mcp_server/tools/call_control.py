@@ -12,7 +12,9 @@ logger = get_logger(__name__)
 
 
 @mcp.tool()
-async def list_call_control_applications(request: Dict[str, Any]) -> Dict[str, Any]:
+async def list_call_control_applications(
+    request: Dict[str, Any],
+) -> Dict[str, Any]:
     """List call control applications.
 
     Args:
@@ -34,7 +36,9 @@ async def list_call_control_applications(request: Dict[str, Any]) -> Dict[str, A
 
 
 @mcp.tool()
-async def get_call_control_application(request: Dict[str, Any]) -> Dict[str, Any]:
+async def get_call_control_application(
+    request: Dict[str, Any],
+) -> Dict[str, Any]:
     """Retrieve a specific call control application.
 
     Args:
@@ -52,30 +56,32 @@ async def get_call_control_application(request: Dict[str, Any]) -> Dict[str, Any
 
 
 @mcp.tool()
-async def create_call_control_application(request: Dict[str, Any]) -> Dict[str, Any]:
+async def create_call_control_application(
+    request: Dict[str, Any],
+) -> Dict[str, Any]:
     """Create a call control application.
 
-        Args:
-           application_name: Required. A user-assigned name to help manage the application.
-           webhook_event_url: Required. The URL where webhooks related to this connection will be sent. Must include a scheme, such as 'https'.
-           active: Optional boolean. Specifies whether the connection can be used. Defaults to True.
-           anchorsite_override: Optional. Directs Telnyx to route media through the site with the lowest round-trip time. Defaults to "Latency".
-           dtmf_type: Optional. Sets the type of DTMF digits sent from Telnyx to this Connection. Defaults to "RFC 2833".
-           first_command_timeout: Optional boolean. Specifies whether calls should hangup after timing out.
-           first_command_timeout_secs: Optional integer. Seconds to wait before timing out a dial command. Defaults to 30.
-           inbound: Optional dictionary. Inbound call settings with these possible keys:
-               - channel_limit: Optional integer. Maximum number of concurrent inbound calls.
-               - shaken_stir_enabled: Optional boolean. Enable SHAKEN/STIR verification for inbound calls.
-               - sip_subdomain: Optional string. SIP subdomain for the application.
-               - sip_subdomain_receive_settings: Optional string. Settings for SIP subdomain receiving.
-           outbound: Optional dictionary. Outbound call settings with these possible keys:
-               - channel_limit: Optional integer. Maximum number of concurrent outbound calls.
-               - outbound_voice_profile_id: Optional string. ID of the outbound voice profile to use.
-           webhook_api_version: Optional. Determines which webhook format will be used. Defaults to "1".
-           webhook_event_failover_url: Optional. The failover URL for webhooks if the primary URL fails.
-           webhook_timeout_secs: Optional integer. Seconds to wait before timing out a webhook.
-       Returns:
-        Dict[str, Any]: Response data
+     Args:
+        application_name: Required. A user-assigned name to help manage the application.
+        webhook_event_url: Required. The URL where webhooks related to this connection will be sent. Must include a scheme, such as 'https'.
+        active: Optional boolean. Specifies whether the connection can be used. Defaults to True.
+        anchorsite_override: Optional. Directs Telnyx to route media through the site with the lowest round-trip time. Defaults to "Latency".
+        dtmf_type: Optional. Sets the type of DTMF digits sent from Telnyx to this Connection. Defaults to "RFC 2833".
+        first_command_timeout: Optional boolean. Specifies whether calls should hangup after timing out.
+        first_command_timeout_secs: Optional integer. Seconds to wait before timing out a dial command. Defaults to 30.
+        inbound: Optional dictionary. Inbound call settings with these possible keys:
+            - channel_limit: Optional integer. Maximum number of concurrent inbound calls.
+            - shaken_stir_enabled: Optional boolean. Enable SHAKEN/STIR verification for inbound calls.
+            - sip_subdomain: Optional string. SIP subdomain for the application.
+            - sip_subdomain_receive_settings: Optional string. Settings for SIP subdomain receiving.
+        outbound: Optional dictionary. Outbound call settings with these possible keys:
+            - channel_limit: Optional integer. Maximum number of concurrent outbound calls.
+            - outbound_voice_profile_id: Optional string. ID of the outbound voice profile to use.
+        webhook_api_version: Optional. Determines which webhook format will be used. Defaults to "1".
+        webhook_event_failover_url: Optional. The failover URL for webhooks if the primary URL fails.
+        webhook_timeout_secs: Optional integer. Seconds to wait before timing out a webhook.
+    Returns:
+     Dict[str, Any]: Response data
     """
     try:
         service = get_authenticated_service(CallControlService)
