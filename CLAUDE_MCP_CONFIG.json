@@ -1,0 +1,10 @@
+{
+  "mcp_servers": [
+    {
+      "type": "url",
+      "url": "https://app-web-3ky2b33hy2dpm.azurewebsites.net/mcp/stream",
+      "name": "telnyx",
+      "authorization_token": "Bearer YOUR_JWT_TOKEN_HERE"
+    }
+  ]
+}

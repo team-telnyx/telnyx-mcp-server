@@ -1,0 +1,15 @@
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "send_message",
+    "arguments": {
+      "request": {
+        "from_": "+17344152878",
+        "to": "+12486194535",
+        "text": "Hello! This is another test from your Telnyx MCP server on Azure. Sent from a different number (+17344152878) as requested!"
+      }
+    }
+  }
+}

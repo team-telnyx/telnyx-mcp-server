@@ -1,0 +1,10 @@
+name: telnyx-mcp-azd # Name for your azd project
+metadata:
+  template: telnyx-mcp-server-azd-python@1.0.0 # Template identifier
+
+services:
+  app: # Logical name for the Telnyx MCP server application within azd
+    project: . # Path to the application code (root of telnyx-mcp-server repo)
+    language: python
+    host: appservice
+    module: app # Corresponds to the Bicep definitions, implies infra/main.bicep or infra/app.bicep

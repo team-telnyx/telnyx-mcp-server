@@ -1,0 +1,8 @@
+name: telnyx-mcp-server
+metadata:
+  template: telnyx-mcp-server-remote@1.0.0
+services:
+  web:
+    project: .
+    language: python
+    host: appservice

@@ -1,0 +1,75 @@
+trigger:
+  branches:
+    include:
+    - main # Or your primary branch
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Define these variables in your Azure DevOps Library or Pipeline settings
+  # AZURE_SERVICE_CONNECTION_NAME: 'YourAzureServiceConnectionName' # Name of your Azure Resource Manager service connection
+  # TELNYX_API_KEY_PIPELINE_SECRET: $(YourTelnyxApiKeySecretInADO) # Name of the ADO secret variable for Telnyx API Key
+
+  # azd environment settings
+  AZURE_ENV_NAME: 'telnyx-mcp-pipeline' # Or derive from Build.SourceBranchName, etc.
+  AZURE_LOCATION: 'eastus' # Or your preferred Azure region
+  # AZURE_SUBSCRIPTION_ID: Set this in pipeline variables or it will be derived from the service connection
+
+stages:
+- stage: DeployInfrastructureAndApp
+  displayName: 'Deploy Infrastructure and Application'
+  jobs:
+  - job: Deploy
+    displayName: 'Initialize, Provision, and Deploy'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.11'
+      displayName: 'Use Python 3.11'
+
+    - script: |
+        curl -fsSL https://aka.ms/install-azd.sh | bash
+      displayName: 'Install Azure Developer CLI (azd)'
+      # Ensure azd is on the PATH for subsequent steps. The script usually handles this.
+      # For Microsoft-hosted agents, azd might already be available or easily installable.
+
+    - script: |
+        azd auth login --client-id $(servicePrincipalId) --client-secret $(servicePrincipalKey) --tenant-id $(tenantId)
+      displayName: 'Login to Azure with Service Principal'
+      # Ensure your Azure Service Connection has contributor rights on the subscription
+      # and User Access Administrator to assign roles for Key Vault access.
+      # $(servicePrincipalId), $(servicePrincipalKey), $(tenantId) are pre-defined ADO variables for the service connection.
+
+    - script: |
+        azd init -t telnyx-mcp-azd-python -e $(AZURE_ENV_NAME) --subscription $(AZURE_SUBSCRIPTION_ID) --location $(AZURE_LOCATION)
+        # The -t template part is optional if code is already structured
+        # Or, if code is already checked out:
+        # azd env new $(AZURE_ENV_NAME) --subscription $(AZURE_SUBSCRIPTION_ID) --location $(AZURE_LOCATION)
+
+        # Set the Telnyx API key for azd to use during provisioning (to store in Key Vault)
+        # Ensure TELNYX_API_KEY_PIPELINE_SECRET is a secret variable in your ADO pipeline
+        azd env set TELNYX_API_KEY $(TELNYX_API_KEY_PIPELINE_SECRET) --secret
+      displayName: 'Initialize azd environment and set secrets'
+      env:
+        AZURE_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID) # Explicitly pass if needed
+        # TELNYX_API_KEY_PIPELINE_SECRET is mapped from pipeline secret variables
+
+    - script: |
+        azd provision --no-prompt
+      displayName: 'Provision Azure Resources (azd provision)'
+      # This will use the TELNYX_API_KEY from `azd env` to populate the Key Vault secret via Bicep.
+
+    - script: |
+        azd deploy --no-prompt
+      displayName: 'Deploy Application (azd deploy)'
+
+    - script: |
+        # Get the App Service endpoint from azd env get-values
+        ENDPOINT=$(azd env get-values --output json | jq -r .AZURE_APP_SERVICE_ENDPOINT)
+        echo "App Service Endpoint: $ENDPOINT"
+        # Health check - Telnyx MCP server has a /health endpoint
+        # Allow a few seconds for the app to start
+        sleep 30
+        curl -sSfL --retry 5 --retry-delay 10 "$ENDPOINT/health" || exit 1
+      displayName: 'Health Check Smoke Test'

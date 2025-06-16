@@ -1,6 +1,15 @@
-# Telnyx Local Model Context Protocol (MCP) Server
+# Telnyx Model Context Protocol (MCP) Server
 
-Official Telnyx Local Model Context Protocol (MCP) Server that enables interaction with powerful telephony, messaging, and AI assistant APIs. This server allows MCP clients like Claude Desktop, Cursor, Windsurf, OpenAI Agents and others to manage phone numbers, send messages, make calls, and create AI assistants.
+Official Telnyx Model Context Protocol (MCP) Server that enables interaction with powerful telephony, messaging, and AI assistant APIs. This server allows MCP clients like Claude Desktop, Claude.ai, Cursor, Windsurf, OpenAI Agents and others to manage phone numbers, send messages, make calls, and create AI assistants.
+
+## Deployment Options
+
+This server supports two deployment modes:
+
+1. **Local Mode** - Run locally via stdio transport for Claude Desktop and other local MCP clients
+2. **Remote Mode** - Deploy as a cloud service with OAuth authentication for Claude.ai custom integrations
+
+For remote deployment instructions, see [REMOTE_DEPLOYMENT.md](REMOTE_DEPLOYMENT.md).
 
 ## Quickstart with Claude Desktop
 

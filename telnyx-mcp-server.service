@@ -1,0 +1,36 @@
+[Unit]
+Description=Telnyx MCP Server
+Documentation=https://github.com/your-org/telnyx-mcp-server
+After=network.target
+
+[Service]
+Type=exec
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/telnyx-mcp-server
+Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/usr/bin/python3 -m src.telnyx_mcp_server.remote.server
+Restart=on-failure
+RestartSec=5
+StartLimitInterval=60
+StartLimitBurst=3
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/telnyx-mcp-server/logs
+
+# Resource limits
+LimitNOFILE=65535
+LimitNPROC=4096
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=telnyx-mcp-server
+
+[Install]
+WantedBy=multi-user.target

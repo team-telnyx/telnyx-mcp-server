@@ -1,0 +1,13 @@
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "send_sms",
+    "arguments": {
+      "to": "+12486194535",
+      "from": "+16602401313",
+      "text": "Hello! This is a test message from your Telnyx MCP server. Your remote server is working!"
+    }
+  }
+}
