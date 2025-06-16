@@ -158,3 +158,8 @@ cython_debug/
 .idea/
 
 .DS_Store
+
+# Runtime files
+*.pid
+server_dev.pid
+server_*.pid
