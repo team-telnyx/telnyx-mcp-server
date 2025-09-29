@@ -2,7 +2,7 @@
 
 > **⚠️ DEPRECATED**: This Python-based MCP server is deprecated. Please migrate to the official TypeScript version:
 >
-> **New Repository:** https://github.com/team-telnyx/telnyx-node/tree/main/packages/mcp-server
+> **New Repository:** https://github.com/team-telnyx/telnyx-node/tree/master/packages/mcp-server
 
 ---
 
