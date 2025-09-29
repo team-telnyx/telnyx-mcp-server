@@ -1,5 +1,11 @@
 # Telnyx Local Model Context Protocol (MCP) Server
 
+> **⚠️ DEPRECATED**: This Python-based MCP server is deprecated. Please migrate to the official TypeScript version:
+>
+> **New Repository:** https://github.com/team-telnyx/telnyx-node/tree/main/packages/mcp-server
+
+---
+
 Official Telnyx Local Model Context Protocol (MCP) Server that enables interaction with powerful telephony, messaging, and AI assistant APIs. This server allows MCP clients like Claude Desktop, Cursor, Windsurf, OpenAI Agents and others to manage phone numbers, send messages, make calls, and create AI assistants.
 
 ## Quickstart with Claude Desktop
